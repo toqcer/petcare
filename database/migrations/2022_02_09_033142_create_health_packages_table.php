@@ -22,7 +22,6 @@ class CreateHealthPackagesTable extends Migration
             $table->string('perfume');
             $table->string('vitamin');
             $table->string('snack');
-            $table->date('available_date');
             $table->string('duration');
             $table->string('package_name');
             $table->integer('price');

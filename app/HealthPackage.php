@@ -11,7 +11,7 @@ class HealthPackage extends Model
 
     protected $fillable = [
         'title', 'slug', 'caption', 'about', 'perfume', 'vitamin', 
-        'snack', 'available_date', 'duration', 'package_name', 'price'
+        'snack', 'duration', 'package_name', 'price'
     ];
 
     protected $hidden = [
