@@ -17,6 +17,8 @@ class Transaction extends Model
 
     ];
 
+    protected $with = ['health_package'];
+
     public function details(){
         return $this->hasMany(TransactionDetail::class, 'transactions_id', 'id');
     }

@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+    protected $openingHour = 8;
+    protected $closingHour = 17;
+    protected $workingHour = 9;
+
     public function index(Request $request, $id)
     {
-        $item = Transaction::with(['details', 'health_package', 'user'])->findOrFail($id);
+        $item = Transaction::with(['details', 'user'])->findOrFail($id);
 
         return view('pages.checkout',[
             'item' => $item
@@ -30,18 +34,18 @@ class CheckoutController extends Controller
             'health_packages_id' => $id,
             'users_id' => Auth::user()->id,
             'additional' => 0,
-            'transaction_total' => $health_package->price,
+            'transaction_total' => 0,
             'transaction_status' => 'IN_CART'
         ]);
 
-        TransactionDetail::create([
-            'transactions_id' => $transaction->id,
-            'username' => Auth::user()->username,
-            'queue' => 1,
-            'pet' => false,
-            // 'status' => Menunggu,
-            'package_date' => Carbon::now()->addYears(5)
-        ]);
+        // TransactionDetail::create([
+        //     'transactions_id' => $transaction->id,
+        //     'pet_name' => $request->pet_name,
+        //     'queue' => 1,
+        //     'pet' => $request->pet,
+        //     // 'status' => Menunggu,
+        //     'package_date' => $request->package_date
+        // ]);
 
         return redirect()->route('checkout', $transaction->id);
     }
@@ -50,7 +54,7 @@ class CheckoutController extends Controller
     {
         $item = TransactionDetail::findOrFail($detail_id);
 
-        $transaction = Transaction::with(['details', 'health_package'])
+        $transaction = Transaction::with(['details'])
             ->findOrFail($item->transactions_id);
 
         $transaction->transaction_total -= 
@@ -64,25 +68,52 @@ class CheckoutController extends Controller
 
     public function create(Request $request, $id)
     {
-        $request->validate([
-            'username' => 'required|string|exists:users,username',
+        $data = $request->validate([
+            'pet_name' => 'required|string',
             'pet' => 'required|string',
             'package_date' => 'required'
         ]);
 
-        $data = $request->all();
+        $packageDate = Carbon::parse($request->package_date);
+        
         $data['transactions_id'] = $id;
+        $transaction = Transaction::findOrFail($id);
 
-        TransactionDetail::create($data);
+        $sameDayTrx = TransactionDetail::with(['transaction'])->where('package_date', $packageDate)->get();
 
-        $transaction = Transaction::with(['health_package'])->find($id);
+        // dd($sameDayTrx);
 
-        $transaction->transaction_total += 
-            $transaction->health_package->price;
+        $totalTime = 0;
+        if ($sameDayTrx) {
+            $totalTime = $sameDayTrx->sum('transaction.health_package.duration');
+        }
+        // $totalTime += $transaction->health_package->duration;
 
-        $transaction->save();
+        $isEnoughTime = $totalTime + $transaction->health_package->duration <= $this->workingHour * 60;
 
-        return redirect()->back();
+        if ($isEnoughTime) {
+            $data['queue'] = count($sameDayTrx) + 1;
+            $estimationTime = Carbon::parse($request->package_date);
+            
+            $estimationHour = $totalTime / 60;
+            $estimationMinute = $totalTime  % 60;
+
+            $estimationTime->hour( $this->openingHour + $estimationHour);
+            $estimationTime->minute($estimationMinute);
+            $data['estimation_time'] = $estimationTime;
+
+            TransactionDetail::create($data);
+    
+            $transaction->transaction_total += 
+                $transaction->health_package->price;
+    
+            $transaction->save();
+    
+            return redirect()->back();
+            
+        }
+
+        return redirect()->back()->with(['error' => 'jadwal di tanggal '. $request->package_date . ' sudah penuh']);
     }
 
     public function success(Request $request, $id)

@@ -51,10 +51,11 @@
                                     <thead>
                                         <tr>
                                             <td>Foto</td>
-                                            <td>Nama</td>
+                                            <td>Nama Hewan</td>
                                             <td>Antrian ke</td>
                                             <td>Hewan</td>
                                             <td>Status</td>
+                                            <td>Estimasi Waktu</td>
                                             <td></td>
                                         </tr>
                                     </thead>
@@ -63,19 +64,22 @@
                                         @forelse ($item->details as $detail)
                                             <tr>
                                                 <td>
-                                                    <img src="https://ui-avatars.com/api/?name={{ $detail->username }}" height="50" class="rounded-circle">
+                                                    <img src="https://ui-avatars.com/api/?name={{ $detail->pet_name }}" height="50" class="rounded-circle">
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ $detail->username }}
+                                                    {{ $detail->pet_name }}
                                                 </td>
                                                 <td class="align-middle">
                                                    {{ $detail->queue }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ $detail->pet ? 'Kucing' : 'Anjing'  }}
+                                                    {{ $detail->pet}}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ \Carbon\Carbon::createFromDate($detail->package_date) > \Carbon\Carbon::now() ? 'Selesai' : 'Menunggu' }}
+                                                    {{ $detail->estimation_time < now() ? 'Selesai' : 'Menunggu' }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ $detail->estimation_time}}
                                                 </td>
                                                 <td class="align-middle">
                                                     <a href="{{ route('checkout-remove', $detail->id) }}">
@@ -98,31 +102,20 @@
                                 <h2>Tambah Antrian</h2>
                                 <form class="form-inline" method="post" action="{{ route('checkout-create', $item->id) }}">
                                     @csrf
-                                    <label for="username" class="sr-only">Nama</label>
+                                    <label for="pet_name" class="sr-only">Nama Hewan</label>
                                     <input 
                                         type="text" 
                                         class="form-control mb-2 mr-sm-2"
-                                        name="username" 
-                                        id="username" 
+                                        name="pet_name" 
+                                        id="pet_name" 
                                         required
-                                        placeholder="Username">
-
-                                    <label for="queue" class="sr-only">Antrian ke</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control mb-2 mr-sm-2"
-                                        style="width: 50px"
-                                        name="queue" 
-                                        id="queue" 
-                                        required
-                                        placeholder="Antrian ke">
-
+                                        placeholder="Nama Hewan">
 
                                     <label for="pet" class="sr-only">Hewan</label>
-                                    <select name="pet" id="pet" class="custom-select mb-2 mr-sm-2">
-                                        <option value="" selected>Hewan</option>
-                                        <option value="1">Kucing</option>
-                                        <option value="0">Anjing</option>
+                                    <select name="pet" id="pet" class="custom-select mb-2 mr-sm-2" required>
+                                        <option value="" selected disabled>Jenis Hewan</option>
+                                        <option value="kucing">Kucing</option>
+                                        <option value="anjing">Anjing</option>
                                     </select>
 
                                     <label for="package_date" class="sr-only">DD/MM/YYYY</label>
@@ -132,7 +125,8 @@
                                         class="form-control datepicker"
                                         name="package_date"
                                         id="dateBooking"
-                                        placeholder="DD/MM/YYYY">
+                                        placeholder="DD/MM/YYYY"
+                                        required>
                                     </div>
 
                                     <button type="submit" class="btn btn-add-now mb-2 px-4">

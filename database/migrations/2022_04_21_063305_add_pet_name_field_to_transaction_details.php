@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropUsernameColumnOnTransactionDetailTable extends Migration
+class AddPetNameFieldToTransactionDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class DropUsernameColumnOnTransactionDetailTable extends Migration
     public function up()
     {
         Schema::table('transaction_details', function (Blueprint $table) {
-            $table->dropColumn('username');
+            $table->string('pet_name');
         });
     }
 
@@ -22,11 +22,11 @@ class DropUsernameColumnOnTransactionDetailTable extends Migration
      * Reverse the migrations.
      *
      * @return void
-     */
+     */ 
     public function down()
     {
         Schema::table('transaction_details', function (Blueprint $table) {
-            $table->string('username');
+            $table->dropColumn('pet_name');
         });
     }
 }

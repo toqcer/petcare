@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropUsernameColumnOnTransactionDetailTable extends Migration
+class AddEstimationTimeFieldToTransactionDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class DropUsernameColumnOnTransactionDetailTable extends Migration
     public function up()
     {
         Schema::table('transaction_details', function (Blueprint $table) {
-            $table->dropColumn('username');
+            $table->dateTime('estimation_time');
         });
     }
 
@@ -26,7 +26,7 @@ class DropUsernameColumnOnTransactionDetailTable extends Migration
     public function down()
     {
         Schema::table('transaction_details', function (Blueprint $table) {
-            $table->string('username');
+            $table->dropColumn('estimation_time');
         });
     }
 }
