@@ -71,13 +71,13 @@ class CheckoutController extends Controller
         $now = Carbon::now();
         $today = Carbon::today();
         $packageDate = Carbon::parse($request->package_date);
-
-        if ($packageDate < $today) {
-            return redirect()->back()->withErrors(['tidak bisa membuat jadwal di tanggal '. $request->package_date]);
-        }
-
+        
         $closingTime = clone $packageDate;
         $closingTime->hour($this->closingHour);
+
+        if ($now > $closingTime) {
+            return redirect()->back()->withErrors(['tidak bisa membuat jadwal di tanggal '. $request->package_date]);
+        }
 
         $transaction = Transaction::findOrFail($id);
         $sameDayTrx = TransactionDetail::where('package_date', $packageDate)->get();
