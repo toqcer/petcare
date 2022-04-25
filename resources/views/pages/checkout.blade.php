@@ -161,12 +161,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="50%">Additional</th>
-                                    <td width="50%" class="text-right">
-                                        {{ $item->additional }}
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th width="50%">Total Hewan</th>
                                     <td width="50%" class="text-right">
                                         {{ $item->details->count() }}

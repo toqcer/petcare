@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Auth;
 class CheckoutController extends Controller
 {
     protected $openingHour = 8;
-    protected $closingHour = 17;
-    protected $workingHour = 9;
-    protected $spareTime = 15;
+    protected $closingHour = 17; 
+    protected $spareTime = 15; // in minutes
 
     public function index(Request $request, $id)
     {
@@ -31,8 +30,6 @@ class CheckoutController extends Controller
 
     public function process(Request $request, $id)
     {
-        $health_package = HealthPackage::findOrfail($id);
-
         $transaction = Transaction::create([
             'health_packages_id' => $id,
             'users_id' => Auth::user()->id,
