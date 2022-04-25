@@ -56,6 +56,7 @@
                                             <td>Hewan</td>
                                             <td>Status</td>
                                             <td>Estimasi Waktu</td>
+                                            <td>Estimasi Selesai</td>
                                             <td></td>
                                         </tr>
                                     </thead>
@@ -80,6 +81,9 @@
                                                 </td>
                                                 <td class="align-middle">
                                                     {{ $detail->estimation_time}}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ $detail->finished_at}}
                                                 </td>
                                                 <td class="align-middle">
                                                     <a href="{{ route('checkout-remove', $detail->id) }}">

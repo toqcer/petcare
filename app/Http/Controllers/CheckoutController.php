@@ -16,13 +16,16 @@ class CheckoutController extends Controller
     protected $openingHour = 8;
     protected $closingHour = 17;
     protected $workingHour = 9;
+    protected $spareTime = 15;
 
     public function index(Request $request, $id)
     {
-        $item = Transaction::with(['details', 'user'])->findOrFail($id);
+        $item = Transaction::with(['user', 'details' => function ($query) {
+            $query->orderBy('estimation_time');
+        }])->findOrFail($id);
 
         return view('pages.checkout',[
-            'item' => $item
+            'item' => $item,
         ]);
     }
 
@@ -37,15 +40,6 @@ class CheckoutController extends Controller
             'transaction_total' => 0,
             'transaction_status' => 'IN_CART'
         ]);
-
-        // TransactionDetail::create([
-        //     'transactions_id' => $transaction->id,
-        //     'pet_name' => $request->pet_name,
-        //     'queue' => 1,
-        //     'pet' => $request->pet,
-        //     // 'status' => Menunggu,
-        //     'package_date' => $request->package_date
-        // ]);
 
         return redirect()->route('checkout', $transaction->id);
     }
@@ -74,46 +68,56 @@ class CheckoutController extends Controller
             'package_date' => 'required'
         ]);
 
+        $now = Carbon::now();
+        $today = Carbon::today();
         $packageDate = Carbon::parse($request->package_date);
-        
-        $data['transactions_id'] = $id;
+
+        if ($packageDate < $today) {
+            return redirect()->back()->withErrors(['tidak bisa membuat jadwal di tanggal '. $request->package_date]);
+        }
+
+        $closingTime = clone $packageDate;
+        $closingTime->hour($this->closingHour);
+
         $transaction = Transaction::findOrFail($id);
+        $sameDayTrx = TransactionDetail::where('package_date', $packageDate)->get();
 
-        $sameDayTrx = TransactionDetail::with(['transaction'])->where('package_date', $packageDate)->get();
+        if ($packageDate != $today or $sameDayTrx->isNotEmpty()) {
 
-        // dd($sameDayTrx);
+            if ($sameDayTrx->isEmpty()) {
 
-        $totalTime = 0;
-        if ($sameDayTrx) {
-            $totalTime = $sameDayTrx->sum('transaction.health_package.duration');
-        }
-        // $totalTime += $transaction->health_package->duration;
-
-        $isEnoughTime = $totalTime + $transaction->health_package->duration <= $this->workingHour * 60;
-
-        if ($isEnoughTime) {
-            $data['queue'] = count($sameDayTrx) + 1;
-            $estimationTime = Carbon::parse($request->package_date);
+                $estimationTime = clone $packageDate;
+                $estimationTime->hour($this->openingHour);
             
-            $estimationHour = $totalTime / 60;
-            $estimationMinute = $totalTime  % 60;
+            } else {
 
-            $estimationTime->hour( $this->openingHour + $estimationHour);
-            $estimationTime->minute($estimationMinute);
-            $data['estimation_time'] = $estimationTime;
+                $estimationTime = $sameDayTrx->last()->finished_at;
 
-            TransactionDetail::create($data);
-    
-            $transaction->transaction_total += 
-                $transaction->health_package->price;
-    
-            $transaction->save();
-    
-            return redirect()->back();
-            
+            }
+        
+        } else {
+
+            $estimationTime = $now->addMinutes($this->spareTime);
+        
         }
 
-        return redirect()->back()->with(['error' => 'jadwal di tanggal '. $request->package_date . ' sudah penuh']);
+        $finishedAt = clone $estimationTime;
+        $finishedAt->addMinutes($transaction->health_package->duration);
+
+        if ($finishedAt > $closingTime) {
+            return redirect()->back()->withErrors(['jadwal di tanggal '. $request->package_date . ' sudah penuh']);
+        }
+        
+        $data['queue'] = count($sameDayTrx) + 1;
+        $data['transactions_id'] = $id;
+        $data['estimation_time'] = $estimationTime;
+        $data['finished_at'] = $finishedAt;
+
+        TransactionDetail::create($data);
+        $transaction->transaction_total += $transaction->health_package->price;
+        $transaction->save();
+        
+        return redirect()->back();
     }
 
     public function success(Request $request, $id)
