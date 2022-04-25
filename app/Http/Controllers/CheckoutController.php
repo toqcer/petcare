@@ -79,7 +79,7 @@ class CheckoutController extends Controller
         $transaction = Transaction::findOrFail($id);
         $sameDayTrx = TransactionDetail::where('package_date', $packageDate)->get();
 
-        if ($packageDate != $today or $sameDayTrx->isNotEmpty()) {
+        if ($packageDate != $today or ($sameDayTrx->isNotEmpty() and $sameDayTrx->last()->finished_at > $now)) {
 
             if ($sameDayTrx->isEmpty()) {
 

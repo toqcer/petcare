@@ -77,7 +77,7 @@
                                                     {{ $detail->pet}}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ $detail->estimation_time < now() ? 'Selesai' : 'Menunggu' }}
+                                                    {{ $detail->estimation_time < $now ? $detail->finished_at < $now ? 'Selesai' : 'In Progress' : 'Menunggu' }}
                                                 </td>
                                                 <td class="align-middle">
                                                     {{ $detail->estimation_time}}
