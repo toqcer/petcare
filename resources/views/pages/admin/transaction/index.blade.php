@@ -13,7 +13,7 @@
         <div class="row">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-pdf-without-action" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -58,7 +58,6 @@
                                     </td>
                                 </tr>
                             @endforelse
-                            
                         </tbody>
                     </table>
                 </div>
@@ -68,3 +67,21 @@
     </div>
     <!-- /.container-fluid -->
 @endsection
+
+@push('scripts')
+    <script>
+        const thTotal = $(".table-pdf-without-action th").length
+        $(".table-pdf-without-action").DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'pdf'
+            ],
+            columnDefs: [
+                {
+                    orderable: false, 
+                    targets: [thTotal - 1]
+                }
+            ]
+        })
+    </script>
+@endpush
