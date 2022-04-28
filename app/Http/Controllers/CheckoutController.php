@@ -23,6 +23,8 @@ class CheckoutController extends Controller
             $query->orderBy('estimation_time');
         }])->findOrFail($id);
 
+        // dd($item->details);
+
         return view('pages.checkout',[
             'item' => $item,
         ]);
@@ -33,7 +35,6 @@ class CheckoutController extends Controller
         $transaction = Transaction::create([
             'health_packages_id' => $id,
             'users_id' => Auth::user()->id,
-            // 'additional' => 0,
             'transaction_total' => 0,
             'transaction_status' => 'IN_CART'
         ]);
@@ -124,6 +125,6 @@ class CheckoutController extends Controller
 
         $transaction->save();
 
-        return view('pages.success');
+        return view('pages.success', compact('transaction'));
     }
 }

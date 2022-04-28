@@ -16,10 +16,10 @@
                     <table class="table table-bordered table-pdf-without-action" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Paket</th>
                                 <th>User</th>
-                                <th>Hewan Peliharaan</th>
+                                {{-- <th>Hewan Peliharaan</th> --}}
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -29,10 +29,9 @@
                                 
                             @forelse ($items as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->health_package->title }}</td>
                                     <td>{{ $item->user->name }}</td>
-                                    <td>{{ $item->additional }}</td>
                                     <td>{{ $item->transaction_total }}</td>
                                     <td>{{ $item->transaction_status }}</td>
                                     <td>

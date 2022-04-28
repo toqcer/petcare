@@ -11,7 +11,7 @@ $factory->define(HealthPackage::class, function (Faker $faker) {
     $title = $faker->word();
 
     return [
-        'title' => $faker->word($title),
+        'title' => $title,
         'slug' => Str::slug($title),
         'caption' => $faker->sentence(),
         'about' => $faker->paragraph(),
