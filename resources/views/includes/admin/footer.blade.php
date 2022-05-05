@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="sticky-footer bg-white">
+<footer class="sticky-footer bg-white d-print-none">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright &copy; Petcare 2021</span>

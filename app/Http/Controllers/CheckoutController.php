@@ -13,34 +13,30 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+    protected $openingHour = 8;
+    protected $closingHour = 17; 
+    protected $spareTime = 15; // in minutes
+
     public function index(Request $request, $id)
     {
-        $item = Transaction::with(['details', 'health_package', 'user'])->findOrFail($id);
+        $item = Transaction::with(['user', 'details' => function ($query) {
+            $query->orderBy('estimation_time');
+        }])->findOrFail($id);
+
+        // dd($item->details);
 
         return view('pages.checkout',[
-            'item' => $item
+            'item' => $item,
         ]);
     }
 
     public function process(Request $request, $id)
     {
-        $health_package = HealthPackage::findOrfail($id);
-
         $transaction = Transaction::create([
             'health_packages_id' => $id,
             'users_id' => Auth::user()->id,
-            'additional' => 0,
-            'transaction_total' => $health_package->price,
+            'transaction_total' => 0,
             'transaction_status' => 'IN_CART'
-        ]);
-
-        TransactionDetail::create([
-            'transactions_id' => $transaction->id,
-            'username' => Auth::user()->username,
-            'queue' => 1,
-            'pet' => false,
-            // 'status' => Menunggu,
-            'package_date' => Carbon::now()->addYears(5)
         ]);
 
         return redirect()->route('checkout', $transaction->id);
@@ -50,7 +46,7 @@ class CheckoutController extends Controller
     {
         $item = TransactionDetail::findOrFail($detail_id);
 
-        $transaction = Transaction::with(['details', 'health_package'])
+        $transaction = Transaction::with(['details'])
             ->findOrFail($item->transactions_id);
 
         $transaction->transaction_total -= 
@@ -64,24 +60,61 @@ class CheckoutController extends Controller
 
     public function create(Request $request, $id)
     {
-        $request->validate([
-            'username' => 'required|string|exists:users,username',
+        $data = $request->validate([
+            'pet_name' => 'required|string',
             'pet' => 'required|string',
             'package_date' => 'required'
         ]);
 
-        $data = $request->all();
+        $now = Carbon::now();
+        $today = Carbon::today();
+        $packageDate = Carbon::parse($request->package_date);
+        
+        $closingTime = clone $packageDate;
+        $closingTime->hour($this->closingHour);
+
+        if ($now > $closingTime) {
+            return redirect()->back()->withErrors(['tidak bisa membuat jadwal di tanggal '. $request->package_date]);
+        }
+
+        $transaction = Transaction::findOrFail($id);
+        $sameDayTrx = TransactionDetail::where('package_date', $packageDate)->get();
+
+        if ($packageDate != $today or ($sameDayTrx->isNotEmpty() and $sameDayTrx->last()->finished_at > $now)) {
+
+            if ($sameDayTrx->isEmpty()) {
+
+                $estimationTime = clone $packageDate;
+                $estimationTime->hour($this->openingHour);
+            
+            } else {
+
+                $estimationTime = $sameDayTrx->last()->finished_at;
+
+            }
+        
+        } else {
+
+            $estimationTime = $now->addMinutes($this->spareTime);
+        
+        }
+
+        $finishedAt = clone $estimationTime;
+        $finishedAt->addMinutes($transaction->health_package->duration);
+
+        if ($finishedAt > $closingTime) {
+            return redirect()->back()->withErrors(['jadwal di tanggal '. $request->package_date . ' sudah penuh']);
+        }
+        
+        $data['queue'] = count($sameDayTrx) + 1;
         $data['transactions_id'] = $id;
+        $data['estimation_time'] = $estimationTime;
+        $data['finished_at'] = $finishedAt;
 
         TransactionDetail::create($data);
-
-        $transaction = Transaction::with(['health_package'])->find($id);
-
-        $transaction->transaction_total += 
-            $transaction->health_package->price;
-
+        $transaction->transaction_total += $transaction->health_package->price;
         $transaction->save();
-
+        
         return redirect()->back();
     }
 
@@ -92,6 +125,6 @@ class CheckoutController extends Controller
 
         $transaction->save();
 
-        return view('pages.success');
+        return view('pages.success', compact('transaction'));
     }
 }

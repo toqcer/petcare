@@ -33,7 +33,7 @@ Route::get('/checkout/remove/{detail_id}', 'CheckoutController@remove')
     ->name('checkout-remove')
     ->middleware(['auth', 'verified']);
 
-Route::get('/checkout/confirm/{id}', 'CheckoutController@success')
+Route::post('/checkout/confirm/{id}', 'CheckoutController@success')
     ->name('checkout-success')
     ->middleware(['auth', 'verified']);
 
@@ -41,7 +41,7 @@ Route::prefix('admin')
     ->namespace('Admin')
     ->middleware(['auth', 'admin'])
     ->group(function() {
-        route::get('/','DashboardController@index')
+        Route::get('/','DashboardController@index')
             ->name('dashboard');
         
         Route::resource('health-package', 'HealthPackageController');

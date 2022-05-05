@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRolesFieldToUsersTable extends Migration
+class AddEstimationTimeFieldToTransactionDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddRolesFieldToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('roles', ['USER', 'ADMIN'])->default('USER');
+        Schema::table('transaction_details', function (Blueprint $table) {
+            $table->dateTime('estimation_time');
         });
     }
 
@@ -25,8 +25,8 @@ class AddRolesFieldToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('roles');
+        Schema::table('transaction_details', function (Blueprint $table) {
+            $table->dropColumn('estimation_time');
         });
     }
 }

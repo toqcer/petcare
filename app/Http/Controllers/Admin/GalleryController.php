@@ -46,12 +46,14 @@ class GalleryController extends Controller
      */
     public function store(GalleryRequest $request)
     {
-        $data = $request->all();
-        $data['image'] = $request->file('image')->store(
-            'assets/gallery', 'public'
-        ); 
+        $uploadImg = $request->file('image');
+        $pathImg = $uploadImg->store('assets/gallery', 'public');
 
-        Gallery::create($data);
+        Gallery::create([
+            'health_packages_id' => $request->health_packages_id,
+            'image' => '/storage/' . $pathImg
+        ]);
+
         return redirect()->route('gallery.index');
     }
 

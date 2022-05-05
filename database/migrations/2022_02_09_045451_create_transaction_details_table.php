@@ -18,7 +18,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->integer('transactions_id');
             $table->string('username');
             $table->integer('queue');
-            $table->string('pet');
+            $table->enum('pet', ['kucing', 'anjing']);
             $table->date('package_date');
             $table->softDeletes();
             $table->timestamps();
