@@ -23,8 +23,6 @@ class CheckoutController extends Controller
             $query->orderBy('estimation_time');
         }])->findOrFail($id);
 
-        // dd($item->details);
-
         return view('pages.checkout',[
             'item' => $item,
         ]);

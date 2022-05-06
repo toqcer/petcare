@@ -33,30 +33,23 @@
                         </p>
                         <div class="attendee">
                             <table
-                                class="table table-responsive-sm text-center"
+                                class="table table-responsive text-center"
                             >
                                 <thead>
                                     <tr>
-                                        <td>Foto</td>
                                         <td>Nama Hewan</td>
                                         <td>Antrian ke</td>
                                         <td>Hewan</td>
                                         <td>Status</td>
                                         <td>Estimasi Waktu</td>
                                         <td>Estimasi Selesai</td>
+                                        <td>Perkiraan Nomor Antrian</td>
                                         <td></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($item->details as $detail)
                                     <tr>
-                                        <td>
-                                            <img
-                                                src="https://ui-avatars.com/api/?name={{ $detail->pet_name }}"
-                                                height="50"
-                                                class="rounded-circle"
-                                            />
-                                        </td>
                                         <td class="align-middle">
                                             {{ $detail->pet_name }}
                                         </td>
@@ -75,6 +68,9 @@
                                         </td>
                                         <td class="align-middle font-weight-bold">
                                             {{ $detail->finished_at->format('d M Y H:i') }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ $detail->queue }}
                                         </td>
                                         <td class="align-middle">
                                             <a
