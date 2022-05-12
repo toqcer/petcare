@@ -23,8 +23,6 @@ class CheckoutController extends Controller
             $query->orderBy('estimation_time');
         }])->findOrFail($id);
 
-        // dd($item->details);
-
         return view('pages.checkout',[
             'item' => $item,
         ]);
@@ -60,10 +58,12 @@ class CheckoutController extends Controller
 
     public function create(Request $request, $id)
     {
+        // dd($request->all());
         $data = $request->validate([
             'pet_name' => 'required|string',
             'pet' => 'required|string',
-            'package_date' => 'required'
+            'package_date' => 'required',
+            'transfer_proof' => 'required|image'
         ]);
 
         $now = Carbon::now();
@@ -105,11 +105,15 @@ class CheckoutController extends Controller
         if ($finishedAt > $closingTime) {
             return redirect()->back()->withErrors(['jadwal di tanggal '. $request->package_date . ' sudah penuh']);
         }
+
+        $uploadTransferProof = $request->file('transfer_proof');
+        $pathTransferProof = $uploadTransferProof->store('assets/transfer-proof', 'public');
         
         $data['queue'] = count($sameDayTrx) + 1;
         $data['transactions_id'] = $id;
         $data['estimation_time'] = $estimationTime;
         $data['finished_at'] = $finishedAt;
+        $data['transfer_proof'] = $pathTransferProof;
 
         TransactionDetail::create($data);
         $transaction->transaction_total += $transaction->health_package->price;

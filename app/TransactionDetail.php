@@ -10,7 +10,7 @@ class TransactionDetail extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'transactions_id', 'pet_name', 'queue', 'pet', 'package_date', 'estimation_time', 'finished_at'
+        'transactions_id', 'pet_name', 'queue', 'pet', 'package_date', 'estimation_time', 'transfer_proof', 'finished_at',
     ];
 
     protected $hidden = [

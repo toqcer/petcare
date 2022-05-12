@@ -49,6 +49,7 @@
                                 <th>Tanggal Pesan</th>
                                 <th>Estimasi waktu datang</th>
                                 <th>Estimasi waktu selesai</th>
+                                <th>Bukti transfer</th>
                             </tr>
 
                             @foreach ($item->details as $detail)
@@ -58,6 +59,11 @@
                                 <td>{{ $detail->package_date }}</td>
                                 <td>{{ $detail->estimation_time->format('d M Y H:i') }}</td>
                                 <td>{{ $detail->finished_at->format('d M Y H:i') }}</td>
+                                <td>
+                                    <a data-fslightbox href="{{ Storage::url($detail->transfer_proof) }}">
+                                        Lihat bukti
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                         </table>
@@ -71,8 +77,10 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js" integrity="sha512-2VqLVM3WCyaqUgQb2hpoWHSus021RIN0Jq0wfrLqqLh+anm1kW/H4Yw7HVu3D5W4nbdUQmAA2mqQv2JEoy+kPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(function() {
+
             $(".print").click(function () {
                 window.print()
             })

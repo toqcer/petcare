@@ -33,30 +33,23 @@
                         </p>
                         <div class="attendee">
                             <table
-                                class="table table-responsive-sm text-center"
+                                class="table table-responsive text-center"
                             >
                                 <thead>
                                     <tr>
-                                        <td>Foto</td>
                                         <td>Nama Hewan</td>
                                         <td>Antrian ke</td>
                                         <td>Hewan</td>
                                         <td>Status</td>
                                         <td>Estimasi Waktu</td>
                                         <td>Estimasi Selesai</td>
+                                        <td>Perkiraan Nomor Antrian</td>
                                         <td></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($item->details as $detail)
                                     <tr>
-                                        <td>
-                                            <img
-                                                src="https://ui-avatars.com/api/?name={{ $detail->pet_name }}"
-                                                height="50"
-                                                class="rounded-circle"
-                                            />
-                                        </td>
                                         <td class="align-middle">
                                             {{ $detail->pet_name }}
                                         </td>
@@ -75,6 +68,9 @@
                                         </td>
                                         <td class="align-middle font-weight-bold">
                                             {{ $detail->finished_at->format('d M Y H:i') }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ $detail->queue }}
                                         </td>
                                         <td class="align-middle">
                                             <a
@@ -104,47 +100,69 @@
                         <div class="member mt-3">
                             <h2>Tambah Antrian</h2>
                             <form
-                                class="form-inline"
                                 method="post"
                                 action="{{ route('checkout-create', $item->id) }}"
+                                enctype="multipart/form-data"
                             >
                                 @csrf
-                                <label for="pet_name" class="sr-only">Nama Hewan</label>
-                                <input
-                                    type="text"
-                                    class="form-control mb-2 mr-sm-2"
-                                    name="pet_name"
-                                    id="pet_name"
-                                    required
-                                    placeholder="Nama Hewan"
-                                />
 
-                                <label for="pet" class="sr-only">Hewan</label>
-                                <select
-                                    name="pet"
-                                    id="pet"
-                                    class="custom-select mb-2 mr-sm-2"
-                                    required
-                                >
-                                    <option value="" selected disabled>
-                                        Jenis Hewan
-                                    </option>
-                                    <option value="kucing">Kucing</option>
-                                    <option value="anjing">Anjing</option>
-                                </select>
+                                <div class="row">
 
-                                <label for="package_date" class="sr-only"
-                                    >DD/MM/YYYY</label
-                                >
-                                <div class="input-group mb-2 mr-sm-2">
-                                    <input
-                                        type="text"
-                                        class="form-control datepicker"
-                                        name="package_date"
-                                        id="dateBooking"
-                                        placeholder="DD/MM/YYYY"
-                                        required
-                                    />
+                                    <div class="form-group col">
+                                        <label for="pet_name" class="sr-only">Nama Hewan</label>
+                                        <input
+                                            type="text"
+                                            class="form-control mb-2 mr-sm-2"
+                                            name="pet_name"
+                                            id="pet_name"
+                                            required
+                                            placeholder="Nama Hewan"
+                                        />
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="pet" class="sr-only">Hewan</label>
+                                        <select
+                                            name="pet"
+                                            id="pet"
+                                            class="custom-select mb-2 mr-sm-2"
+                                            required
+                                        >
+                                            <option value="" selected disabled>
+                                                Jenis Hewan
+                                            </option>
+                                            <option value="kucing">Kucing</option>
+                                            <option value="anjing">Anjing</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col">
+                                        <label for="package_date" class="sr-only">DD/MM/YYYY</label>
+                                        <input
+                                            type="text"
+                                            class="form-control datepicker"
+                                            name="package_date"
+                                            id="dateBooking"
+                                            placeholder="DD/MM/YYYY"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div class="form-group col">
+                                        <div class="custom-file">
+                                            <input
+                                                type="file"
+                                                class="custom-file-input"
+                                                name="transfer_proof"
+                                                id="transfer-proof"
+                                                accept="image/*"
+                                                required
+                                            />
+                                            <label for="transfer-proof" class="custom-file-label">Upload bukti transfer</label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <button
@@ -274,10 +292,16 @@
     rel="stylesheet"
     href="{{ url('frontend/libraries/combined/css/gijgo.min.css') }}"
 />
-@endpush @push('addon-script')
+@endpush 
+
+@push('addon-script')
 <script src="{{ url('frontend/libraries/combined/js/gijgo.min.js') }}"></script>
 <script>
     $(document).ready(function() {
+        $("[type='file']").change(function (e) {
+            const fileName = e.target.files[0].name;
+            $(this).next().text(fileName)
+        })
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
