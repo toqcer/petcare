@@ -99,28 +99,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="card card-details card-right">
-                        <h2>Antrian Saat Ini</h2>
-                        <div class="members my-2">
-                            <img
-                                src="{{ url('frontend/images/member1.png') }}"
-                                class="member-image mr-1"
-                            />
-                            <img
-                                src="{{ url('frontend/images/member2.png') }}"
-                                class="member-image mr-1"
-                            />
-                            <img
-                                src="{{ url('frontend/images/member3.png') }}"
-                                class="member-image mr-1"
-                            />
-                            <img
-                                src="{{
-                                    url('frontend/images/memberplus.png')
-                                }}"
-                                class="member-image mr-1"
-                            />
-                        </div>
-                        <hr />
+                        
                         <h2>Informasi Paket</h2>
                         <table class="package-information">
                             <tr>
