@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\TransactionRequest;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -115,5 +116,75 @@ class TransactionController extends Controller
         $item->delete();
 
         return redirect()->route('transaction.index');
+    }
+
+    public function confirmPayment(Transaction $trx) 
+    {
+        $trx->update(['transaction_status' => 'SUCCESS']);
+        return redirect()->route('transaction.index')->with('success', 'payment berhasil di verifikasi');
+    }
+
+    public function rejectPayment(Transaction $trx) 
+    {
+        $trx->update(['transaction_status' => 'CANCEL']);
+        return redirect()->route('transaction.index')->with('success', 'payment berhasil di tolak');
+    }
+
+    public function weekTransaction() 
+    {   
+        $date = today();
+        $date->subDays(7);
+        $items = Transaction::with('health_package')
+            ->withCount('details')
+            ->selectRaw(' DATE(created_at) as created_date')
+            ->where('created_at' ,'>', $date)
+            ->where('transaction_status', 'SUCCESS')                 
+            ->get();
+
+        return view('pages.admin.transaction.report',[
+            'items' => $items,
+            'grandTotalTransaction' => $items->sum('details_count'),
+            'grandTotalSales' => $items->sum('transaction_total'),
+            'title' => 'Week Report'
+        ]); 
+    }
+
+    public function monthTransaction() 
+    {   
+        $date = today();
+        $date->subMonth();
+        $items = Transaction::with('health_package')
+            ->withCount('details')
+            ->selectRaw(' DATE(created_at) as created_date')
+            ->where('created_at' ,'>', $date)
+            ->where('transaction_status', 'SUCCESS')                 
+            ->get();
+
+        return view('pages.admin.transaction.report',[
+            'items' => $items,
+            'grandTotalTransaction' => $items->sum('details_count'),
+            'grandTotalSales' => $items->sum('transaction_total'),
+            'title' => 'Month Report'
+        ]); 
+    }
+
+    public function yearTransaction() 
+    {   
+        $date = today();
+        $date->month(1);
+        $date->day(1);
+        $items = Transaction::with('health_package')
+            ->withCount('details')
+            ->selectRaw(' DATE(created_at) as created_date')
+            ->where('created_at' ,'>', $date)
+            ->where('transaction_status', 'SUCCESS')                 
+            ->get();
+
+        return view('pages.admin.transaction.report',[
+            'items' => $items,
+            'grandTotalTransaction' => $items->sum('details_count'),
+            'grandTotalSales' => $items->sum('transaction_total'),
+            'title' => 'Year Report'
+        ]); 
     }
 }
