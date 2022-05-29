@@ -19,8 +19,8 @@
                                 <th>No</th>
                                 <th>Date</th>
                                 <th>Paket</th>
-                                <th>Harga Paket</th>
                                 <th>Quantity</th>
+                                <th>Harga Paket</th>
                                 <th>Sales</th>
                             </tr>
                         </thead>
@@ -32,8 +32,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->created_date }}</td>
                                         <td>{{ $item->health_package->title }}</td>
-                                        <td>Rp. {{ number_format($item->health_package->price) }}</td>
                                         <td>{{ $item->details_count }}</td>
+                                        <td>Rp. {{ number_format($item->health_package->price) }}</td>
                                         <td>Rp. {{ number_format($item->transaction_total) }}</td>
                                     </tr>
                                 @endforeach
