@@ -46,6 +46,29 @@
         >
     </li>
 
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('transaction.week') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Week Report</span></a
+        >
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('transaction.month') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Month Report</span></a
+        >
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('transaction.year') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Year Report</span></a
+        >
+    </li>
+    
+
     <hr class="sidebar-divider" />
 
     <!-- Sidebar Toggler (Sidebar) -->
