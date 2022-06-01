@@ -102,12 +102,12 @@
                         
                         <h2>Informasi Paket</h2>
                         <table class="package-information">
-                            <tr>
+                            <!-- <tr>
                                 <th width="50%">Tgl Tersedia</th>
                                 <td width="50%" class="text-right">
                                     {{ Carbon\Carbon::create($item->available_date)->format('F n, Y') }}
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th width="50%">Durasi</th>
                                 <td width="50%" class="text-right">

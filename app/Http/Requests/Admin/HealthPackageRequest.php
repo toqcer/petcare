@@ -30,7 +30,6 @@ class HealthPackageRequest extends FormRequest
             'perfume' => 'required|max:255',
             'vitamin' => 'required|max:255',
             'snack' => 'required|max:255',
-            'available_date' => 'required|date',
             'duration' => 'required|max:255',
             'package_name' => 'required|max:255',
             'price' => 'required|integer'
