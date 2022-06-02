@@ -185,12 +185,6 @@
                         <h2>Informasi Checkout</h2>
                         <table class="package-information">
                             <tr>
-                                <th width="50%">Tgl Tersedia</th>
-                                <td width="50%" class="text-right">
-                                    {{ $item->health_package->available_date }}
-                                </td>
-                            </tr>
-                            <tr>
                                 <th width="50%">Durasi</th>
                                 <td width="50%" class="text-right">
                                     {{ $item->health_package->duration . ' menit' }}
