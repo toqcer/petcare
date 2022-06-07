@@ -53,10 +53,6 @@
                         <input type="text" class="form-control" name="snack" placeholder="Snack" value="{{ $item->snack }}">
                     </div>
                     <div class="form-group">
-                        <label for="available_date">Available Date</label>
-                        <input type="date" class="form-control" name="available_date" placeholder="Available Date" value="{{ $item->available_date }}">
-                    </div>
-                    <div class="form-group">
                         <label for="duration">Duration</label>
                         <input type="text" class="form-control" name="duration" placeholder="Duration" value="{{ $item->duration }}">
                     </div>

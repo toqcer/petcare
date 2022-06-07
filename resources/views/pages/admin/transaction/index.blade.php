@@ -21,6 +21,7 @@
                                 <th>User</th>
                                 {{-- <th>Hewan Peliharaan</th> --}}
                                 <th>Total</th>
+                                <th>Tanggal</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -33,6 +34,11 @@
                                     <td>{{ $item->health_package->title }}</td>
                                     <td>{{ $item->user->name }}</td>
                                     <td>{{ $item->transaction_total }}</td>
+                                    <td>
+                                        @foreach ($item->details as $detail)
+                                            <div>{{ $detail->package_date }}</div>
+                                        @endforeach
+                                    </td>
                                     <td>{{ $item->transaction_status }}</td>
                                     <td>
                                         <a href="{{ route('transaction.show', $item->id) }}" class="btn btn-primary">

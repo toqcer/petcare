@@ -12,6 +12,7 @@
                     <img src="{{ asset('frontend/images/sukses.png') }}" alt="">
                 </a>
                 <h1 class="">Pembayaran Berhasil!</h1>
+                <h5>Screenshot Halaman Ini Sebagai Bukti Pemesanan!</h5>
                 <article class="text-black">
                     @foreach ($transaction->details as $detail)
                     <div class="mb-3">

@@ -22,7 +22,7 @@
                                 <th>ID</th>
                                 <th>Title</th>
                                 <th>Caption</th>
-                                <th>Available Date</th>
+                                <!-- <th>Available Date</th> -->
                                 <th>Package Name</th>
                                 <th>Action</th>
                             </tr>
@@ -34,7 +34,6 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->caption }}</td>
-                                    <td>{{ $item->available_date }}</td>
                                     <td>{{ $item->package_name }}</td>
                                     <td>
                                         <a href="{{ route('health-package.edit', $item->id) }}" class="btn btn-info">

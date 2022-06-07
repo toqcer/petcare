@@ -46,6 +46,11 @@ Route::prefix('admin')
         
         Route::resource('health-package', 'HealthPackageController');
         Route::resource('gallery', 'GalleryController');
+        Route::get('/transaction/{trx}/confirm', 'TransactionController@confirmPayment')->name("transaction.confirm");
+        Route::get('/transaction/{trx}/reject', 'TransactionController@rejectPayment')->name("transaction.reject");
+        Route::get('/transaction/week', 'TransactionController@weekTransaction')->name("transaction.week");
+        Route::get('/transaction/month', 'TransactionController@monthTransaction')->name("transaction.month");
+        Route::get('/transaction/year', 'TransactionController@yearTransaction')->name("transaction.year");
         Route::resource('transaction', 'TransactionController');
         
     });

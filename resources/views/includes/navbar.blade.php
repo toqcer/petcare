@@ -17,10 +17,7 @@
                     <a href="#" class="nav-link active">Home</a>
                 </li>
                 <li class="nav-item mx-md-2">
-                    <a href="#" class="nav-link">Paket Sehat</a>
-                </li>
-                <li class="nav-item mx-md-2">
-                    <a href="#" class="nav-link">Tentang Kami</a>
+                    <a href="#popular" class="nav-link">Paket Sehat</a>
                 </li>
             </ul>
 
