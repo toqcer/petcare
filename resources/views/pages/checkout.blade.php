@@ -43,7 +43,6 @@
                                         <td>Status</td>
                                         <td>Estimasi Waktu</td>
                                         <td>Estimasi Selesai</td>
-                                        <td>Perkiraan Nomor Antrian</td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -68,9 +67,6 @@
                                         </td>
                                         <td class="align-middle font-weight-bold">
                                             {{ $detail->finished_at->format('d M Y H:i') }}
-                                        </td>
-                                        <td class="align-middle">
-                                            {{ $detail->queue }}
                                         </td>
                                         <td class="align-middle">
                                             <a
