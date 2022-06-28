@@ -43,9 +43,9 @@ Route::prefix('admin')
     ->group(function() {
         Route::get('/','DashboardController@index')
             ->name('dashboard');
-        
         Route::resource('health-package', 'HealthPackageController');
         Route::resource('gallery', 'GalleryController');
+        Route::resource('worker', 'WorkerController');
         Route::get('/transaction/{trx}/confirm', 'TransactionController@confirmPayment')->name("transaction.confirm");
         Route::get('/transaction/{trx}/reject', 'TransactionController@rejectPayment')->name("transaction.reject");
         Route::get('/transaction/week', 'TransactionController@weekTransaction')->name("transaction.week");

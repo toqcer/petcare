@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class CreateTransactionDetailsTable extends Migration
 {
@@ -20,6 +21,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->integer('queue');
             $table->enum('pet', ['kucing', 'anjing']);
             $table->date('package_date');
+            $table->bigInteger('worker_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

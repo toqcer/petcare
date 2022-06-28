@@ -68,6 +68,13 @@
         >
     </li>
     
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('worker.index') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Pegawai</span></a
+        >
+    </li>
+    
 
     <hr class="sidebar-divider" />
 
