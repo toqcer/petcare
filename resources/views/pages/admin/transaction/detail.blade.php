@@ -43,7 +43,7 @@
                     <tr>
                         <th>Bukti Pembayaran</th>
                         <td>
-                            <a data-fslightbox href="{{ Storage::url($item->transfer_proof) }}">
+                            <a data-fslightbox="gallery" href="{{ config('app.url') . Storage::url($item->transfer_proof) }}">
                             Lihat bukti
                             </a>
                         </td>
