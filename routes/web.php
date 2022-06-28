@@ -51,6 +51,9 @@ Route::prefix('admin')
         Route::get('/transaction/week', 'TransactionController@weekTransaction')->name("transaction.week");
         Route::get('/transaction/month', 'TransactionController@monthTransaction')->name("transaction.month");
         Route::get('/transaction/year', 'TransactionController@yearTransaction')->name("transaction.year");
+        Route::get('/transaction/today', 'TransactionController@todayTransaction')->name("transaction.today");
+        Route::get('/transaction/today/{item}/assign', 'TransactionController@selectWorkerView')->name("transaction.assign-worker");
+        Route::put('/transaction/today/{item}/assign', 'TransactionController@assignWorker');
         Route::resource('transaction', 'TransactionController');
         
     });

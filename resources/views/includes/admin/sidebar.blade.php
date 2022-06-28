@@ -67,6 +67,13 @@
             <span>Year Report</span></a
         >
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('transaction.today') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Today's Transaction</span></a
+        >
+    </li>
     
     <li class="nav-item">
         <a class="nav-link" href="{{ route('worker.index') }}">

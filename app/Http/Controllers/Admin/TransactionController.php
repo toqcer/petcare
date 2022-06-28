@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TransactionRequest;
 use App\Transaction;
+use App\TransactionDetail;
+use App\Worker;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -188,5 +191,27 @@ class TransactionController extends Controller
             'grandTotalSales' => $items->sum('transaction_total'),
             'title' => 'Year Report'
         ]); 
+    }
+
+    public function todayTransaction()
+    {
+        return view('pages.admin.transaction.today', [
+            'items' => TransactionDetail::with('worker')->where('package_date', Carbon::today())->get(),
+        ]);
+    }
+
+    public function selectWorkerView(TransactionDetail $item)
+    {
+        return view('pages.admin.transaction.assign-worker', [
+            'item' => $item,
+            'workers' => Worker::all(),
+        ]);
+    }
+
+    public function assignWorker(Request $request,TransactionDetail $item)
+    {
+        $item->worker_id = $request->worker_id;
+        $item->save();
+        return redirect()->route('transaction.today')->with(['success', 'Berhasil memilih pegawai']);
     }
 }
