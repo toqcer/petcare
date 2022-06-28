@@ -214,4 +214,26 @@ class TransactionController extends Controller
         $item->save();
         return redirect()->route('transaction.today')->with(['success', 'Berhasil memilih pegawai']);
     }
+
+    public function cancelRequest()
+    {
+        return view('pages.admin.transaction.cancel-request', [
+            'items' => Transaction::where('transaction_status', 'CANCEL_REFUND')->get()
+        ]);
+    }
+
+    public function cancelRequestDetail(Transaction $transaction)
+    {
+        return view('pages.admin.transaction.cancel-request-show', [
+            'item' => $transaction
+        ]);
+    }
+
+    public function cancelRequestCompleted(Transaction $transaction)
+    {
+        $transaction->transaction_status = 'REFUNDED';
+        $transaction->save();
+
+        return redirect()->route('transaction.cancel-request')->with('success', 'Sukses melakukan refund order');
+    }
 }

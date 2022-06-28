@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('users_id')->nullable();
             $table->integer('additional');
             $table->integer('transaction_total');
-            $table->enum('transaction_status', ['IN_CART', 'PENDING', 'SUCCESS', 'CANCEL_REFUND', 'CANCEL', 'FAILED', 'REFUNDED']); //IN_CART, PENDING, SUCCESS, CANCEL FAILED
+            $table->enum('transaction_status', ['IN_CART', 'PENDING', 'SUCCESS', 'CANCEL_REFUND', 'CANCEL', 'FAILED', 'REFUNDED', 'FINISHED']); //IN_CART, PENDING, SUCCESS, CANCEL FAILED
             $table->softDeletes();
             $table->timestamps();
         });

@@ -45,6 +45,16 @@ Route::post('/checkout/confirm/{id}', 'CheckoutController@success')
     ->name('checkout-success')
     ->middleware(['auth', 'verified']);
 
+Route::get('/my-order/{transaction}/rate', 'RatingController@create')
+    ->name('my-order.rate')
+    ->middleware(['auth', 'verified']);
+
+Route::post('/my-order/{transaction}/rate', 'RatingController@store')
+    ->middleware(['auth', 'verified']);
+
+Route::get('rating','RatingController@index')
+    ->name('rating.index')->prefix('admin')->middleware(['auth', 'admin']);
+
 Route::prefix('admin')
     ->namespace('Admin')
     ->middleware(['auth', 'admin'])
@@ -60,6 +70,9 @@ Route::prefix('admin')
         Route::get('/transaction/month', 'TransactionController@monthTransaction')->name("transaction.month");
         Route::get('/transaction/year', 'TransactionController@yearTransaction')->name("transaction.year");
         Route::get('/transaction/today', 'TransactionController@todayTransaction')->name("transaction.today");
+        Route::get('/transaction/cancel-request', 'TransactionController@cancelRequest')->name("transaction.cancel-request");
+        Route::get('/transaction/cancel-request/{transaction}/refund', 'TransactionController@cancelRequestCompleted')->name("transaction.cancel-request.refund");
+        Route::get('/transaction/cancel-request/{transaction}', 'TransactionController@cancelRequestDetail')->name("transaction.cancel-request.show");
         Route::get('/transaction/today/{item}/assign', 'TransactionController@selectWorkerView')->name("transaction.assign-worker");
         Route::put('/transaction/today/{item}/assign', 'TransactionController@assignWorker');
         Route::resource('transaction', 'TransactionController');

@@ -20,6 +20,9 @@
                         <p>
                             {{ $item->caption }}
                         </p>
+                        <p class="text-warning font-weight-bold">
+                            Rating : {{ $item->ratings->avg('value') ?? 0}}/5
+                        </p>
 
                         @if ($item->galleries->count())
                         <div class="gallery">

@@ -18,7 +18,13 @@ class HealthPackage extends Model
 
     ];
 
-    public function galleries(){
+    public function galleries()
+    {
         return $this->hasMany(Gallery::class, 'health_packages_id', 'id');
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 }

@@ -31,4 +31,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
+    }
 }

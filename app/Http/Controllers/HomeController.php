@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $items = HealthPackage::with(['galleries'])->get();
+        $items = HealthPackage::with(['galleries', 'ratings'])->get();
         return view('pages.home',[
             'items' => $items
         ]);

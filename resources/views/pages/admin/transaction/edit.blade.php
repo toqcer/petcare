@@ -38,7 +38,10 @@
                             <option value="PENDING">Pending</option>
                             <option value="SUCCESS">Success</option>
                             <option value="CANCEL">Cancel</option>
+                            <option value="CANCEL_REFUND">Cancel Refund</option>
                             <option value="FAILED">Failed</option>
+                            <option value="REFUNDED">Refunded</option>
+                            <option value="FINISHED">Finished</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">

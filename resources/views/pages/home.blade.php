@@ -47,13 +47,14 @@
                 @foreach ($items as $item)
                 <div class="col-sm-6 col-md-4 col-lg-3">
                     <div
-                        class="card-package text-center d-flex flex-column"
+                        class="card-package text-center d-flex flex-column font-weight-bold"
                         style="background-image: url('{{ $item->galleries->count() ? $item->galleries->first()->image : '' }}')"
                     >
                         <div class="package-name">
                             {{ $item->package_name }}
                         </div>
                         <div class="package-caption">{{ $item->title }}</div>
+                        <p class="text-warning">Rating : {{ $item->ratings->avg('value') ?? 0}}/5</p>
                         <div class="div package-button mt-auto">
                             <a
                                 href="{{ route('detail', $item->slug) }}"

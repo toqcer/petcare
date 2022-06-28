@@ -89,6 +89,13 @@
         >
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('rating.index') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Rating</span></a
+        >
+    </li>
+
     <hr class="sidebar-divider" />
 
     <!-- Sidebar Toggler (Sidebar) -->

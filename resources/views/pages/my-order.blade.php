@@ -26,6 +26,11 @@
                                     <div class="font-weight-bold">
                                         Grand Total : Rp. {{ number_format($transaction->transaction_total) }}
                                     </div>
+                                    @if (! is_null($transaction->rating))
+                                        <div class="font-weight-bold">
+                                            Rating : {{ $transaction->rating->value }}/5
+                                        </div>
+                                    @endif
                                     <div class="mt-3">
                                         Transaction Items :
                                     </div>
@@ -52,6 +57,12 @@
                                             <a href="{{ route('checkout.cancel', $transaction->id) }}"
                                                 class="btn btn-danger mr-3">
                                                 Batalkan Pesanan
+                                            </a>
+                                        @endif
+                                        @if ($transaction->transaction_status == 'FINISHED' and is_null($transaction->rating))
+                                            <a href="{{ route('my-order.rate', $transaction->id) }}"
+                                                class="btn btn-primary mr-3">
+                                                Berikan Rating
                                             </a>
                                         @endif
                                     </div>
