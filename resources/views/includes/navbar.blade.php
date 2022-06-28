@@ -19,6 +19,11 @@
                 <li class="nav-item mx-md-2">
                     <a href="#popular" class="nav-link">Paket Sehat</a>
                 </li>
+                @auth
+                    <li class="nav-item mx-md-2">
+                        <a href="{{ route('my-order') }}" class="nav-link">My Order</a>
+                    </li>
+                @endauth
             </ul>
 
             @guest

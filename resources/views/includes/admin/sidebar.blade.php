@@ -46,6 +46,13 @@
         >
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('transaction.cancel-request') }}">
+            <i class="fas fa-fw fa-file"></i>
+            <span>Cancel Order Request</span></a
+        >
+    </li>
+    
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('transaction.week') }}">
@@ -81,7 +88,6 @@
             <span>Pegawai</span></a
         >
     </li>
-    
 
     <hr class="sidebar-divider" />
 

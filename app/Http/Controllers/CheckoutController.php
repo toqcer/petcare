@@ -132,4 +132,21 @@ class CheckoutController extends Controller
 
         return view('pages.success', compact('transaction'));
     }
+
+    public function cancelTransaction(Transaction $transaction)
+    {
+        switch ($transaction->transaction_status) {
+            case 'IN_CART':
+                $transaction->transaction_status = 'CANCEL';
+                break;
+
+            case 'SUCCESS':
+                $transaction->transaction_status = 'CANCEL_REFUND';
+                break;
+        }
+
+        $transaction->save();
+
+        return redirect()->back()->with('success', 'berhasil membatalkan order');
+    }
 }

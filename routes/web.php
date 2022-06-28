@@ -21,8 +21,16 @@ Route::post('/checkout/{id}', 'CheckoutController@process')
     ->name('checkout_process')
     ->middleware(['auth', 'verified']);
 
+Route::get('/my-order', 'HomeController@myOrder')
+    ->name('my-order')
+    ->middleware(['auth', 'verified']);
+
 Route::get('/checkout/{id}', 'CheckoutController@index')
     ->name('checkout')
+    ->middleware(['auth', 'verified']);
+
+Route::get('/checkout/{transaction}/cancel', 'CheckoutController@cancelTransaction')
+    ->name('checkout.cancel')
     ->middleware(['auth', 'verified']);
 
 Route::post('/checkout/create/{detail_id}', 'CheckoutController@create')
