@@ -98,7 +98,6 @@
                             <form
                                 method="post"
                                 action="{{ route('checkout-create', $item->id) }}"
-                                enctype="multipart/form-data"
                             >
                                 @csrf
 
@@ -144,20 +143,6 @@
                                             placeholder="DD/MM/YYYY"
                                             required
                                         />
-                                    </div>
-
-                                    <div class="form-group col">
-                                        <div class="custom-file">
-                                            <input
-                                                type="file"
-                                                class="custom-file-input"
-                                                name="transfer_proof"
-                                                id="transfer-proof"
-                                                accept="image/*"
-                                                required
-                                            />
-                                            <label for="transfer-proof" class="custom-file-label">Upload bukti transfer</label>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -253,9 +238,21 @@
                                 <div class="clearfix"></div>
                             </div>
                         </div>
+                        <div class="custom-file">
+                            <input
+                                type="file"
+                                class="custom-file-input"
+                                name="transfer_proof"
+                                id="transfer-proof"
+                                accept="image/*"
+                                required
+                                form="formPay"
+                            />
+                            <label for="transfer-proof" class="custom-file-label">Upload bukti transfer</label>
+                        </div>
                     </div>
                     <div class="join-container">
-                        <form action="{{ route('checkout-success', $item->id) }}" method="post">
+                        <form id="formPay" action="{{ route('checkout-success', $item->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <button type="submit"
                                 class="btn btn-block btn-join-now mt-3 py-2"

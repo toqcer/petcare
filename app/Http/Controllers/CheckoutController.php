@@ -63,7 +63,6 @@ class CheckoutController extends Controller
             'pet_name' => 'required|string',
             'pet' => 'required|string',
             'package_date' => 'required',
-            'transfer_proof' => 'required|image'
         ]);
 
         $now = Carbon::now();
@@ -105,15 +104,11 @@ class CheckoutController extends Controller
         if ($finishedAt > $closingTime) {
             return redirect()->back()->withErrors(['jadwal di tanggal '. $request->package_date . ' sudah penuh']);
         }
-
-        $uploadTransferProof = $request->file('transfer_proof');
-        $pathTransferProof = $uploadTransferProof->store('assets/transfer-proof', 'public');
         
         $data['queue'] = count($sameDayTrx) + 1;
         $data['transactions_id'] = $id;
         $data['estimation_time'] = $estimationTime;
         $data['finished_at'] = $finishedAt;
-        $data['transfer_proof'] = $pathTransferProof;
 
         TransactionDetail::create($data);
         $transaction->transaction_total += $transaction->health_package->price;
@@ -124,7 +119,13 @@ class CheckoutController extends Controller
 
     public function success(Request $request, $id)
     {
+        // dd($request->all());
+        $request->validate([
+            'transfer_proof' => 'required|image'
+        ]);
         $transaction = Transaction::findOrFail($id);
+        $pathTransferProof = $request->file('transfer_proof')->store('assets/transfer-proof', 'public');
+        $transaction->transfer_proof = $pathTransferProof;
         $transaction->transaction_status = 'PENDING';
 
         $transaction->save();

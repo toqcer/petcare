@@ -120,7 +120,9 @@ class TransactionController extends Controller
 
     public function confirmPayment(Transaction $trx) 
     {
-        $trx->update(['transaction_status' => 'SUCCESS']);
+        $trx->update([
+            'transaction_status' => 'SUCCESS',
+        ]);
         return redirect()->route('transaction.index')->with('success', 'payment berhasil di verifikasi');
     }
 

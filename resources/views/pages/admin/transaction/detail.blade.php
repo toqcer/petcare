@@ -39,6 +39,16 @@
                     <th>Status Transaksi</th>
                     <td>{{ $item->transaction_status }}</td>
                 </tr>
+                @if (! is_null($item->transfer_proof))
+                    <tr>
+                        <th>Bukti Pembayaran</th>
+                        <td>
+                            <a data-fslightbox href="{{ Storage::url($item->transfer_proof) }}">
+                            Lihat bukti
+                            </a>
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <th>Pembelian</th>
                     <td>
@@ -49,7 +59,6 @@
                                 <th>Tanggal Pesan</th>
                                 <th>Estimasi waktu datang</th>
                                 <th>Estimasi waktu selesai</th>
-                                <th>Bukti transfer</th>
                             </tr>
 
                             @foreach ($item->details as $detail)
@@ -59,11 +68,6 @@
                                 <td>{{ $detail->package_date }}</td>
                                 <td>{{ $detail->estimation_time->format('d M Y H:i') }}</td>
                                 <td>{{ $detail->finished_at->format('d M Y H:i') }}</td>
-                                <td>
-                                    <a data-fslightbox href="{{ Storage::url($detail->transfer_proof) }}">
-                                        Lihat bukti
-                                    </a>
-                                </td>
                             </tr>
                             @endforeach
                         </table>

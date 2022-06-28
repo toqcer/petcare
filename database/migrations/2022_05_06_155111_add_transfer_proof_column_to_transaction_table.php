@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTransferProofColumnToTransactionDetailTable extends Migration
+class AddTransferProofColumnToTransactionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTransferProofColumnToTransactionDetailTable extends Migration
      */
     public function up()
     {
-        Schema::table('transaction_details', function (Blueprint $table) {
-            $table->string('transfer_proof');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->string('transfer_proof')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddTransferProofColumnToTransactionDetailTable extends Migration
      */
     public function down()
     {
-        Schema::table('transaction_details', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->string('transfer_proof');
         });
     }
