@@ -15,15 +15,15 @@ class CreateHealthPackagesTable extends Migration
     {
         Schema::create('health_packages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('slug');
-            $table->string('caption');
+            $table->string('title', 100);
+            $table->string('slug', 100);
+            $table->string('caption', 150);
             $table->longText('about');
-            $table->string('perfume');
-            $table->string('vitamin');
-            $table->string('snack');
+            $table->string('perfume', 200);
+            $table->string('vitamin', 200);
+            $table->string('snack', 200);
             $table->integer('duration');
-            $table->string('package_name');
+            $table->string('package_name', 100);
             $table->integer('price');
             $table->softDeletes();
             $table->timestamps();

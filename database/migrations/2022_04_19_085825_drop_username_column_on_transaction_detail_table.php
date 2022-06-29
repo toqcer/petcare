@@ -26,7 +26,7 @@ class DropUsernameColumnOnTransactionDetailTable extends Migration
     public function down()
     {
         Schema::table('transaction_details', function (Blueprint $table) {
-            $table->string('username');
+            $table->string('username', 25);
         });
     }
 }

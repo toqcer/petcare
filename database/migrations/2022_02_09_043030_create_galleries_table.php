@@ -16,7 +16,7 @@ class CreateGalleriesTable extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('health_packages_id');
-            $table->text('image');
+            $table->string('image');
             $table->softDeletes();
             $table->timestamps();
         });

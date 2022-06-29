@@ -17,7 +17,7 @@ class CreateTransactionDetailsTable extends Migration
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('transactions_id');
-            $table->string('username');
+            $table->string('username', 25);
             $table->integer('queue');
             $table->enum('pet', ['kucing', 'anjing']);
             $table->date('package_date');

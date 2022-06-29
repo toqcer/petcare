@@ -14,7 +14,7 @@ class AddTransferProofColumnToTransactionTable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('transfer_proof')->nullable();
+            $table->string('transfer_proof', 100)->nullable();
         });
     }
 
