@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             HealtPackageSeeder::class,
             GalleryHealthPackageSeeder::class,
-            WorkerSeeder::class,
+            // WorkerSeeder::class,
         ]);
     }
 }
